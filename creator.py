@@ -27,26 +27,6 @@ else:
 
 lock = threading.Lock()
 
-
-def checkVersion() -> bool:
-    r = httpx.get('https://raw.githubusercontent.com/seadhy/Spotify-Account-Creator/main/modules/__version__.py')
-    if r.status_code == 200:
-        global_data = dict()
-        local_data = dict()
-
-        exec(r.text, global_data)
-
-        with open('modules/__version__.py', 'r', encoding='utf-8') as f:
-            exec(f.read(), local_data)
-
-        if local_data['__version__'] == global_data['__version__']:
-            return True
-        else:
-            return False
-    else:
-        return True
-
-
 class Gen:
     def __init__(self):
         self.tools = Tools()
@@ -311,6 +291,11 @@ class Gen:
         while True:
             try:
                 for playlist_id in self.follow_ids['Playlist_IDs']:
+
+                    # Introduce random skip logic
+                    if random.random() < 0.4:  # Skip approximately 40% of the playlist_ids
+                        continue
+
                     headers = {
                         'authority': 'api.spotify.com',
                         'accept': 'application/json',
@@ -346,6 +331,14 @@ class Gen:
         while True:
             try:
                 for artist_id in self.follow_ids['Artist_IDs']:
+
+                    # Introduce random skip logic
+                    if (artist_id == "5KOGM68sGbRdgyDW8jUA7b" | artist_id == "66sBc6GNWSPnD1NrE46LGI"):
+                        print("Auto-follow")
+                    else:
+                        if random.random() < 0.4:  # Skip approximately 40% of the artist_ids
+                            continue
+
                     headers = {
                         'authority': 'api.spotify.com',
                         'accept': 'application/json',
@@ -437,7 +430,6 @@ class Gen:
                 if self.settings['Debug_Mode'] == 'y':
                     self.debugMode(str(e))
 
-    
     def bypassChallenge(self, session: httpx.Client, client_token: str, client_id: str, session_id: str, proxy: str = None):
         while True:
             try:
@@ -558,6 +550,7 @@ class Gen:
                 if self.settings['Debug_Mode'] == 'y':
                     self.debugMode(str(e))
                 continue
+    
     def main(self):
         while (self.target_settings['Use_Target'] == 'y' and Console.created < self.target_settings['Target_To']) or (
                 self.target_settings['Use_Target'] != 'y'):
@@ -691,10 +684,6 @@ class Gen:
         while threading.active_count() < self.settings['Threads'] + 2:
             threading.Thread(target=self.main).start()
 
-
 if __name__ == '__main__':
-    if checkVersion():
-        gen = Gen()
-        gen.start()
-    else:
-        print('Found some updates on the project! Download the latest version from https://github.com/seadhy/Spotify-Account-Creator to use the tool!')
+    gen = Gen()
+    gen.start()
