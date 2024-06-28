@@ -1,0 +1,14 @@
+modules/__pycache__/console.cpython-311.pyc
+modules/__pycache__/console.cpython-312.pyc
+modules/__pycache__/emailnator.cpython-311.pyc
+modules/__pycache__/emailnator.cpython-312.pyc
+modules/__pycache__/faker.cpython-311.pyc
+modules/__pycache__/faker.cpython-312.pyc
+modules/__pycache__/mail_service.cpython-311.pyc
+modules/__pycache__/mail_service.cpython-312.pyc
+modules/__pycache__/username_creator.cpython-311.pyc
+modules/__pycache__/username_creator.cpython-312.pyc
+data/proxies_mine
+data/proxies.txt
+data/usernames.txt
+data/avatars/temp_image.png
