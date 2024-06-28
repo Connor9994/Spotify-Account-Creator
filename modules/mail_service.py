@@ -27,7 +27,7 @@ class Mail:
             try:
                 mail_text = ''.join(choices(ascii_lowercase + digits, k=12))
                 mail = f'{mail_text}@{self.domain}'
-                password = ''.join(choices(ascii_letters + digits, k=12))
+                password = mail_text
 
                 headers = {
                     'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:109.0) Gecko/20100101 Firefox/110.0',
