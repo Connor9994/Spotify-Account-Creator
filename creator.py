@@ -8,6 +8,7 @@ try:
     from uuid import uuid4
     from cursor import hide
     from subprocess import call
+    import random
     from random import choice, randint
     from modules.console import Console, Tools
     from modules.faker import Faker
@@ -34,7 +35,6 @@ class Gen:
         self.faker = Faker()
         self.console = Console()
         self.mail_tm = Mail()
-        
         
         try:
             self.config_file = json.load(open('data/config.json', 'r', encoding='utf-8'))
@@ -220,11 +220,11 @@ class Gen:
                     if r.status_code == 204:
                         self.console.printi(f'Successfully followed to account: [{account_id}]')
                     else:
-                        self.console.printe('Error following account. Retrying...')
+                        self.console.printe(f'Error following account. Retrying...[{account_id}]')
                         if self.settings['Debug_Mode'] == 'y':
                             self.debugMode(r.text, r.status_code)
                 except Exception:
-                    self.console.printe('Error following account. Retrying...')
+                    self.console.printe(f'Error following account. Retrying...[{account_id}]')
                     continue
             break
 
@@ -289,9 +289,8 @@ class Gen:
 
     def followPlaylist(self, session: httpx.Client, client_token: str, token: str):
         while True:
-            try:
-                for playlist_id in self.follow_ids['Playlist_IDs']:
-
+            for playlist_id in self.follow_ids['Playlist_IDs']:
+                try:
                     # Introduce random skip logic
                     if random.random() < 0.4:  # Skip approximately 40% of the playlist_ids
                         continue
@@ -319,21 +318,20 @@ class Gen:
                     if r.status_code == 200:
                         self.console.printi(f'Successfully followed to playlist: [{playlist_id}]')
                     else:
-                        self.console.printe('Error following, retrying...')
+                        self.console.printe(f'Error following, retrying... [{playlist_id}]')
                         if self.settings['Debug_Mode'] == 'y':
                             self.debugMode(r.text, r.status_code)
-            except Exception:
-                self.console.printe('Error following, retrying...')
-                continue
+                except Exception:
+                    self.console.printe(f'Error following playlist, retrying... [{playlist_id}]')
+                    continue
             break
 
     def followArtist(self, session: httpx.Client, client_token: str, token: str):
         while True:
-            try:
-                for artist_id in self.follow_ids['Artist_IDs']:
-
+            for artist_id in self.follow_ids['Artist_IDs']:
+                try:
                     # Introduce random skip logic
-                    if (artist_id == "5KOGM68sGbRdgyDW8jUA7b" | artist_id == "66sBc6GNWSPnD1NrE46LGI"):
+                    if artist_id == "5KOGM68sGbRdgyDW8jUA7b" or artist_id == "66sBc6GNWSPnD1NrE46LGI":
                         print("Auto-follow")
                     else:
                         if random.random() < 0.4:  # Skip approximately 40% of the artist_ids
@@ -362,13 +360,12 @@ class Gen:
                     if r.status_code == 204:
                         self.console.printi(f'Successfully followed to artist account: [{artist_id}]')
                     else:
-                        self.console.printe('Error following artist account. Retrying...')
+                        self.console.printe(f'Error following artist account. Retrying...[{artist_id}]')
                         if self.settings['Debug_Mode'] == 'y':
                             self.debugMode(r.text, r.status_code)
-            except Exception:
-                self.console.printe('Error following artist account. Retrying...')
-                continue
-
+                except Exception:
+                    self.console.printe(f'Error following artist. Retrying...[{artist_id}]')
+                    continue
             break
 
     def verifyMail(self, session: httpx.Client, verification_link: str):
